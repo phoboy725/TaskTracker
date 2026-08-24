@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/${DB_NAME}"
+    username: "${DB_USER}"
+    password: "${DB_PASS}"
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    repair-identity-on-migrate: true
+    baseline-on-migrate: true
+    enabled: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          secret-key: "IJDSjoss&*)*&csjkjjhuhcu0809809zxcjhIHsdfjhisdhfisdhadfs09wqe0ri"
+logging:
+  enabled: true
+  loglevel: info
+  pattern:
+    console: "%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %5p --- [%15.15t] %-40.40logger{39} : %m%n%kvp"
+
