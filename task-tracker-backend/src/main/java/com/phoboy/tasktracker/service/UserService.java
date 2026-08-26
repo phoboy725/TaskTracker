@@ -32,6 +32,10 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
+    public Optional<User> findUserByUserId(Long userId) {
+        return userRepository.findById(userId);
+    }
+
     @Transactional
     public void saveUser(UserRequestDto requestDto) {
 

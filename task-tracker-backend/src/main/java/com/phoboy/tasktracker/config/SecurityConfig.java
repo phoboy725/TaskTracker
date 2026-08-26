@@ -55,7 +55,7 @@ public class SecurityConfig {
                 "null"
         ));
 
-        configuration.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(java.util.List.of("GET", "POST", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(java.util.List.of("Authorization", "Content-Type", "Accept", "Access-Control-Allow-Origin"));
         configuration.setAllowCredentials(true);
 

@@ -5,17 +5,21 @@ spring:
     password: "${DB_PASS}"
     driver-class-name: org.postgresql.Driver
   flyway:
-    repair-identity-on-migrate: true
     baseline-on-migrate: true
     enabled: true
   security:
     oauth2:
       resourceserver:
         jwt:
-          secret-key: "IJDSjoss&*)*&csjkjjhuhcu0809809zxcjhIHsdfjhisdhfisdhadfs09wqe0ri"
+          secret-key: "${JWT_SECRET_KEY}"
+  kafka:
+    bootstrap-servers: "localhost:29092"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 logging:
-  enabled: true
-  loglevel: info
+  level:
+    root: info
   pattern:
     console: "%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %5p --- [%15.15t] %-40.40logger{39} : %m%n%kvp"
 

@@ -18,6 +18,12 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponseDto(ExceptionMessage.USER_NOT_FOUND));
     }
 
+    @ExceptionHandler(TaskNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleTaskNotFound() {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponseDto(ExceptionMessage.TASK_NOT_FOUND));
+    }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponseDto> handleDataIntegrity(DataIntegrityViolationException ex) {
         String rootMessage = ex.getMostSpecificCause().getMessage();

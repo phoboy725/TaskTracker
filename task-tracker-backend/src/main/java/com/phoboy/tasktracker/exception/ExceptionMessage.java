@@ -19,7 +19,7 @@ public final class ExceptionMessage {
     public static final String PASSWORD_INCORRECT = "Password is incorrect";
     public static final String EXTENSION_CHANGE_ERROR = "You can not change file extension! Sorry!";
     public static final String FOLDER_TOO_BIG = "The folder is too big to Zip it!";
-    public static final String FOLDER_EMPTY = "The folder is empty. Nothing to download";
+    public static final String TASK_NOT_FOUND = "Task not found";
     public static final String FOLDER_SELF_PUT = "You can not put folder into itself";
     public static final String TEMP_FILE_DELETE_ERROR = "Could not delete temp file from path [{}]";
     public static final String TEMP_FILE_SAVE_ERROR = "Saving to temp file error";

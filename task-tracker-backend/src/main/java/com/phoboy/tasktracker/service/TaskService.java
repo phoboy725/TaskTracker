@@ -1,13 +1,23 @@
 package com.phoboy.tasktracker.service;
 
+import com.phoboy.tasktracker.dto.TaskRequestDto;
 import com.phoboy.tasktracker.dto.TaskResponseDto;
+import com.phoboy.tasktracker.event.TaskSummarizationEvent;
+import com.phoboy.tasktracker.exception.ExceptionMessage;
+import com.phoboy.tasktracker.exception.TaskNotFoundException;
+import com.phoboy.tasktracker.exception.UserNotFoundException;
 import com.phoboy.tasktracker.mapper.TaskMapper;
 import com.phoboy.tasktracker.model.Task;
+import com.phoboy.tasktracker.model.TaskStatus;
+import com.phoboy.tasktracker.model.User;
 import com.phoboy.tasktracker.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.kafka.core.KafkaTemplate;
 
+import java.time.Instant;
 import java.util.List;
 
 @Slf4j
@@ -15,19 +25,62 @@ import java.util.List;
 @Service
 public class TaskService {
 
+    private final UserService userService;
     private final TaskRepository taskRepository;
-    private  final TaskMapper taskMapper;
+    private final TaskMapper taskMapper;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     public List<TaskResponseDto> getTasks(Long userId) {
 
-        List<Task> tasks = taskRepository.findTasksByUserId(userId);
-        tasks.forEach(t -> log.info("task=" + t.toString()));
-
+        List<Task> tasks = taskRepository.findTasksByUserIdOrderByIdDesc(userId);
         return tasks.stream()
                 .map(taskMapper::toDto)
                 .toList();
 
     }
+
+    public TaskResponseDto findTaskById(Long userId, Long taskId) {
+        Task task = taskRepository.findByUserIdAndId(userId, taskId).orElseThrow(()-> new TaskNotFoundException(ExceptionMessage.TASK_NOT_FOUND));
+        return taskMapper.toDto(task);
+    }
+
+    @Transactional
+    public TaskResponseDto updateTaskStatus(Long userId, Long taskId, boolean completed) {
+
+        Task task = taskRepository.findByUserIdAndId(userId, taskId)
+                .orElseThrow(()-> new TaskNotFoundException(ExceptionMessage.TASK_NOT_FOUND));
+
+        if (completed) {
+            task.setTaskStatus(TaskStatus.COMPLETED);
+            task.setCompletedAt(Instant.now());
+        } else {
+            task.setTaskStatus(TaskStatus.ACTIVE);
+            task.setCompletedAt(null);
+        }
+
+        return taskMapper.toDto(task);
+    }
+
+    @Transactional
+    public TaskResponseDto createTask(Long userId, TaskRequestDto taskRequestDto) {
+
+        User user = userService.findUserByUserId(userId)
+                .orElseThrow(()-> new UserNotFoundException(ExceptionMessage.USER_NOT_FOUND));
+
+        Task task = Task.builder()
+                .user(user)
+                .title(taskRequestDto.title())
+                .description(taskRequestDto.description())
+                .taskStatus(TaskStatus.ACTIVE)
+                .completedAt(null)
+                .build();
+
+        taskRepository.save(task);
+        kafkaTemplate.send("task.summarization.requests", new TaskSummarizationEvent(task.getUser().getId(), task.getTitle(), task.getDescription()));
+        return taskMapper.toDto(task);
+    }
+
+
 
 
 }

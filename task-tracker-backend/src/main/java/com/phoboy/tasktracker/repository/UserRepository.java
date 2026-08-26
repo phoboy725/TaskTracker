@@ -1,6 +1,7 @@
 package com.phoboy.tasktracker.repository;
 
 import com.phoboy.tasktracker.model.User;
+import org.jspecify.annotations.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +14,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     <S extends User> S save(S entity);
 
     Optional<User> findByEmail(String email);
+
+    Optional<User> findById(@NonNull Long userId);
 
 
 }

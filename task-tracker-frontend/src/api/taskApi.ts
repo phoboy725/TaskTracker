@@ -1,129 +1,129 @@
 import {
-  API_BASE_URL,
-  API_ENDPOINTS,
+    API_BASE_URL,
+    API_ENDPOINTS,
 } from "../config/api";
 
 
 export interface Task {
-  id: string;
-  title: string;
-  description: string;
-  completedAt: string | null;
+    id: string;
+    title: string;
+    description: string;
+    completedAt: string | null;
 }
 
 
 export interface CreateTaskRequest {
-  title: string;
-  description?: string;
+    title: string;
+    description?: string;
 }
 
 
 export interface UpdateTaskRequest {
-  title: string;
-  description?: string;
-  completed: boolean;
+    title: string;
+    description?: string;
+    completed: boolean;
 }
 
 
 function getAuthHeaders() {
-  const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
-  if (!token) {
-    throw new Error("User is not authenticated");
-  }
+    if (!token) {
+        throw new Error("User is not authenticated");
+    }
 
-  return {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
-  };
+    return {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+    };
 }
 
 
 async function handleResponse<T>(
-  response: Response
+    response: Response
 ): Promise<T> {
-  if (!response.ok) {
-    const error = await response
-      .json()
-      .catch(() => ({
-        message: "Request failed",
-      }));
+    if (!response.ok) {
+        const error = await response
+            .json()
+            .catch(() => ({
+                message: "Request failed",
+            }));
 
-    throw new Error(
-      error.message || "Request failed"
-    );
-  }
+        throw new Error(
+            error.message || "Request failed"
+        );
+    }
 
-  const contentType =
-    response.headers.get("content-type");
+    const contentType =
+        response.headers.get("content-type");
 
-  if (
-    !contentType ||
-    !contentType.includes("application/json")
-  ) {
-    return undefined as T;
-  }
+    if (
+        !contentType ||
+        !contentType.includes("application/json")
+    ) {
+        return undefined as T;
+    }
 
-  return response.json();
+    return response.json();
 }
 
 
 export async function getTasks(): Promise<Task[]> {
-  const response = await fetch(
-    `${API_BASE_URL}${API_ENDPOINTS.task.list}`,
-    {
-      method: "GET",
-      headers: getAuthHeaders(),
-    }
-  );
+    const response = await fetch(
+        `${API_BASE_URL}${API_ENDPOINTS.task.list}`,
+        {
+            method: "GET",
+            headers: getAuthHeaders(),
+        }
+    );
 
-  return handleResponse<Task[]>(response);
+    return handleResponse<Task[]>(response);
 }
 
 
 export async function createTask(
-  data: CreateTaskRequest
+    data: CreateTaskRequest
 ): Promise<Task> {
-  const response = await fetch(
-    `${API_BASE_URL}${API_ENDPOINTS.task.list}`,
-    {
-      method: "POST",
-      headers: getAuthHeaders(),
-      body: JSON.stringify(data),
-    }
-  );
+    const response = await fetch(
+        `${API_BASE_URL}${API_ENDPOINTS.task.list}`,
+        {
+            method: "POST",
+            headers: getAuthHeaders(),
+            body: JSON.stringify(data),
+        }
+    );
 
-  return handleResponse<Task>(response);
+    return handleResponse<Task>(response);
 }
 
 
 export async function updateTask(
-  id: string,
-  data: UpdateTaskRequest
+    id: string,
+    data: UpdateTaskRequest
 ): Promise<Task> {
-  const response = await fetch(
-    `${API_BASE_URL}${API_ENDPOINTS.task.byId(id)}`,
-    {
-      method: "PATCH",
-      headers: getAuthHeaders(),
-      body: JSON.stringify(data),
-    }
-  );
+    const response = await fetch(
+        `${API_BASE_URL}${API_ENDPOINTS.task.byId(id)}`,
+        {
+            method: "PATCH",
+            headers: getAuthHeaders(),
+            body: JSON.stringify(data),
+        }
+    );
 
-  return handleResponse<Task>(response);
+    return handleResponse<Task>(response);
 }
 
 
 export async function deleteTask(
-  id: string
+    id: string
 ): Promise<void> {
-  const response = await fetch(
-    `${API_BASE_URL}${API_ENDPOINTS.task.byId(id)}`,
-    {
-      method: "DELETE",
-      headers: getAuthHeaders(),
-    }
-  );
+    const response = await fetch(
+        `${API_BASE_URL}${API_ENDPOINTS.task.byId(id)}`,
+        {
+            method: "DELETE",
+            headers: getAuthHeaders(),
+        }
+    );
 
-  return handleResponse<void>(response);
+    return handleResponse<void>(response);
 }
