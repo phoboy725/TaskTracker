@@ -38,11 +38,11 @@ public class TaskController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<TaskResponseDto> updateTaskStatus(@AuthenticationPrincipal Jwt token,
-                                                            @PathVariable("id") Long taskId,
-                                                            @RequestBody TaskStatusRequestDto requestDto) {
+    public ResponseEntity<TaskResponseDto> updateTask(@AuthenticationPrincipal Jwt token,
+                                                      @PathVariable("id") Long taskId,
+                                                      @RequestBody TaskStatusRequestDto requestDto) {
 
-        TaskResponseDto responseDto = taskService.updateTaskStatus(token.getClaim("userId"), taskId, requestDto.completed());
+        TaskResponseDto responseDto = taskService.updateTask(token.getClaim("userId"), taskId, requestDto);
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 }

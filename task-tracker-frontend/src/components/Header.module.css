@@ -69,9 +69,9 @@
   cursor: pointer;
 
   transition:
-    color 0.2s,
-    background-color 0.2s,
-    border-color 0.2s;
+          color 0.2s,
+          background-color 0.2s,
+          border-color 0.2s;
 }
 
 .logoutButton:hover {
@@ -103,4 +103,16 @@
   .logoutButton span {
     display: none;
   }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.reportButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }

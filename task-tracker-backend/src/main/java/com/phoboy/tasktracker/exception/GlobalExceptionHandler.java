@@ -24,6 +24,12 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponseDto(ExceptionMessage.TASK_NOT_FOUND));
     }
 
+    @ExceptionHandler(NoTasksForReport.class)
+    public ResponseEntity<ErrorResponseDto> handleNoTasksForReport() {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponseDto(ExceptionMessage.NO_TASKS_FOR_REPORT));
+    }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponseDto> handleDataIntegrity(DataIntegrityViolationException ex) {
         String rootMessage = ex.getMostSpecificCause().getMessage();

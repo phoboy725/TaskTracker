@@ -29,6 +29,7 @@ public class Task {
     @Column(name = "title", nullable = false)
     private String title;
 
+    @Setter
     @Column(name = "description")
     private String description;
 
@@ -38,6 +39,7 @@ public class Task {
     private TaskStatus taskStatus;
 
     @Builder.Default
+    @Setter
     @Column(name = "created_at", nullable = false)
     private Instant createdAt = Instant.now();
 

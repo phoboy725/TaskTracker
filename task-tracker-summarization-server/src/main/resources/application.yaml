@@ -1,0 +1,19 @@
+authorization:
+  key: "${SBER_KEY}"
+server:
+  port: 8085
+spring:
+  kafka:
+    bootstrap-servers: "localhost:29092"
+    consumer:
+      group-id: "summarization-worker-group"
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.use.type.info.headers: false
+  cache:
+    cache-names: "gigachat-token"
+    caffeine:
+      spec: expireAfterWrite=1500s,maximumSize=1

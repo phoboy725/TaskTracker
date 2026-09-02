@@ -270,7 +270,6 @@ export default function TasksPage() {
     return (
         <>
             <Header />
-            {false && error}
 
             <main className={styles.page}>
 
@@ -350,7 +349,11 @@ export default function TasksPage() {
 
                     </div>
 
-
+                    {error && (
+                        <div className={styles.error}>
+                            {error}
+                        </div>
+                    )}
 
                     {showForm && (
                         <TaskForm
