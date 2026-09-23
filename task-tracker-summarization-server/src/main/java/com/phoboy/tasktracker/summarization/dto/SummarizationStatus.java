@@ -1,4 +1,4 @@
-package com.phoboy.tasktracker.dto;
+package com.phoboy.tasktracker.summarization.dto;
 
 public enum SummarizationStatus {
     SUCCESS,

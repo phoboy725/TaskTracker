@@ -3,6 +3,7 @@ CREATE TABLE reports
     id         UUID                           NOT NULL,
     user_id    BIGINT                         NOT NULL,
     status     VARCHAR(100)                   NOT NULL,
+    error_cause VARCHAR(250)                          ,
     created_at TIMESTAMP(6) WITH TIME ZONE    NOT NULL,
     CONSTRAINT pk_reports PRIMARY KEY (id)
 );

@@ -1,4 +1,4 @@
-package com.phoboy.tasktracker.dto;
+package com.phoboy.tasktracker.shared.dto;
 
 import jakarta.annotation.Nonnull;
 import jakarta.validation.constraints.Email;
@@ -10,7 +10,7 @@ import java.util.UUID;
 @Builder
 public record SummarizationRequestDto(
         @Nonnull
-        UUID id,
+        UUID uuid,
         @Email
         String userEmail,
         List<TaskInfo> tasks
@@ -25,7 +25,7 @@ public record SummarizationRequestDto(
 
         StringBuilder string = new StringBuilder();
         for (TaskInfo t : tasks) {
-            string.append(String.format("[%s] %s (%s) %n", t.completedAt() == null ? TaskStatus.ACTIVE : TaskStatus.COMPLETED, t.title(), t.description() == null ? "" : t.description()));
+            string.append(String.format("[%s] %s (%s) %n", t.status(), t.title(), t.description() == null ? "" : t.description()));
         }
 
         return string.toString();

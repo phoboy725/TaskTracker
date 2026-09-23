@@ -14,10 +14,26 @@
         <mapstruct.version>1.6.3</mapstruct.version>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+        </dependency>
+    </dependencies>
     <modules>
-        <module>task-tracker-core</module>
         <module>task-tracker-backend</module>
         <module>task-tracker-summarization-server</module>
+        <module>task-tracker-shared</module>
+        <module>task-tracker-mail-server</module>
     </modules>
     <dependencyManagement>
         <dependencies>

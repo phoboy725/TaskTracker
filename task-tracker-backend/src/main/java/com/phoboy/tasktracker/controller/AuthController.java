@@ -30,9 +30,7 @@ public class AuthController {
         String token = tokenService.createToken(requestDto);
 
         return ResponseEntity.status(HttpStatus.OK)
-//                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                 .body(new TokenResponseDto(token));
-//                .build();
 
     }
 

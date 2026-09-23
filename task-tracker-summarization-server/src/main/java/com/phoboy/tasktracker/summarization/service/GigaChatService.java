@@ -1,5 +1,6 @@
 package com.phoboy.tasktracker.summarization.service;
 
+import com.phoboy.tasktracker.summarization.constants.PromptConstants;
 import com.phoboy.tasktracker.summarization.dto.AccessTokenResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,9 +43,7 @@ public class GigaChatService {
                 .body(body)
                 .retrieve()
                 .body(AccessTokenResponseDto.class);
-
-        log.info("RESPONSE>>>" + response);
-
+        
         return response != null ? response.accessToken() : null;
     }
 
@@ -55,14 +54,14 @@ public class GigaChatService {
                 "messages", List.of(
                         Map.of(
                                 "role", "system",
-                                "content", "Сделай краткую выжимку (суммаризацию) следующего текста. Выдели главное."
+                                "content", PromptConstants.GIGACHAT_SYSTEM_PROMPT
                         ),
                         Map.of(
                                 "role", "user",
-                                "content", prompt
+                                "content", PromptConstants.PROMPT_HEADER + prompt
                         )
                 ),
-                "temperature", 0.7
+                "temperature", 0.3
         );
 
 

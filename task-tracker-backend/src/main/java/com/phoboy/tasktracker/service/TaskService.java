@@ -9,9 +9,9 @@ import com.phoboy.tasktracker.exception.TaskNotFoundException;
 import com.phoboy.tasktracker.exception.UserNotFoundException;
 import com.phoboy.tasktracker.mapper.TaskMapper;
 import com.phoboy.tasktracker.model.Task;
-import com.phoboy.tasktracker.model.TaskStatus;
 import com.phoboy.tasktracker.model.User;
 import com.phoboy.tasktracker.repository.TaskRepository;
+import com.phoboy.tasktracker.shared.dto.TaskStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,6 +35,9 @@ public class TaskService {
     public List<TaskResponseDto> getTasks(Long userId) {
 
         List<Task> tasks = taskRepository.findTasksByUserIdOrderByIdDesc(userId);
+
+        log.info("TASKS=" + tasks);
+
         return tasks.stream()
                 .map(taskMapper::toDto)
                 .toList();
@@ -67,7 +70,7 @@ public class TaskService {
             task.setTaskStatus(TaskStatus.COMPLETED);
             task.setCompletedAt(Instant.now());
         } else {
-            if (!requestDto.description().equals(task.getDescription())) {
+            if (task.getDescription() == null || !task.getDescription().equals(requestDto.description())) {
                 task.setDescription(requestDto.description());
             }
             task.setTaskStatus(TaskStatus.ACTIVE);

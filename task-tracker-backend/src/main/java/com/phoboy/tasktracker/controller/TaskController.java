@@ -26,6 +26,8 @@ public class TaskController {
     public ResponseEntity<List<TaskResponseDto>> getTasksOfUser(@AuthenticationPrincipal Jwt token) {
 
         List<TaskResponseDto> tasks = taskService.getTasks(token.getClaim("userId"));
+
+        log.info("TasksController=" + tasks);
         return ResponseEntity.status(HttpStatus.OK).body(tasks);
 
     }

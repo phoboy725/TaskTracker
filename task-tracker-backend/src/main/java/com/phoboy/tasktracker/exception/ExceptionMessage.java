@@ -20,6 +20,7 @@ public final class ExceptionMessage {
     public static final String EXTENSION_CHANGE_ERROR = "You can not change file extension! Sorry!";
     public static final String FOLDER_TOO_BIG = "The folder is too big to Zip it!";
     public static final String TASK_NOT_FOUND = "Task not found";
+    public static final String REPORT_NOT_FOUND = "Report not found";
     public static final String NO_TASKS_FOR_REPORT = "There are NO tasks for report";
     public static final String FOLDER_SELF_PUT = "You can not put folder into itself";
     public static final String TEMP_FILE_DELETE_ERROR = "Could not delete temp file from path [{}]";

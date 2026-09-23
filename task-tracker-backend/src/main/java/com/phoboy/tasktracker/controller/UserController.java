@@ -39,9 +39,7 @@ public class UserController {
         String token = tokenService.createToken(requestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-//                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                 .body(new TokenResponseDto(token));
-//                .build();
 
     }
 

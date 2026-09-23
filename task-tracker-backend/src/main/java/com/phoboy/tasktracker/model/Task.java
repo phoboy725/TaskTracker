@@ -1,5 +1,6 @@
 package com.phoboy.tasktracker.model;
 
+import com.phoboy.tasktracker.shared.dto.TaskStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;

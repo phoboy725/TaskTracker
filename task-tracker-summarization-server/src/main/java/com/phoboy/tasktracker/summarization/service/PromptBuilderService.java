@@ -1,6 +1,6 @@
 package com.phoboy.tasktracker.summarization.service;
 
-import com.phoboy.tasktracker.dto.SummarizationRequestDto;
+import com.phoboy.tasktracker.shared.dto.SummarizationRequestDto;
 import com.phoboy.tasktracker.summarization.constants.PromptConstants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

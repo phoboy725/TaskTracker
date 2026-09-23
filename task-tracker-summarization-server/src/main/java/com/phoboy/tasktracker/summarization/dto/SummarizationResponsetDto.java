@@ -1,4 +1,4 @@
-package com.phoboy.tasktracker.dto;
+package com.phoboy.tasktracker.summarization.dto;
 
 import jakarta.annotation.Nonnull;
 import lombok.Builder;
@@ -6,7 +6,7 @@ import lombok.Builder;
 import java.util.UUID;
 
 @Builder
-public record SummarizationResultDto(
+public record SummarizationResponsetDto(
         @Nonnull
         UUID id,
         SummarizationStatus status,

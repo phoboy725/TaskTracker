@@ -17,16 +17,6 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-//    @PostConstruct
-//    public void init(){
-//        User user = User.builder()
-//                .email("zx@zx.ru")
-//                .passwordHash("$2a$10$8f44uPArgkEKklFVDz8yIe34JlMmjpFPUMqrNXPlmKzcyPfOZ4I7m")
-//                .build();
-//
-//        userRepository.save(user);
-//    }
-
 
     public Optional<User> findUserByEmail(String email) {
         return userRepository.findByEmail(email);

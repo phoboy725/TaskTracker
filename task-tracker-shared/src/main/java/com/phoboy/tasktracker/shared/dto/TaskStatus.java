@@ -1,7 +1,6 @@
-package com.phoboy.tasktracker.dto;
+package com.phoboy.tasktracker.shared.dto;
 
 public enum TaskStatus {
     COMPLETED,
     ACTIVE
 }
-

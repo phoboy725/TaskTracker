@@ -10,6 +10,5 @@ public record TaskResponseDto(
         String title,
         String description,
         Instant completedAt
-
 ) {
 }

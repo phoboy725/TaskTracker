@@ -1,10 +1,9 @@
 package com.phoboy.tasktracker.model;
 
+
+import com.phoboy.tasktracker.shared.dto.ReportStatus;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -23,9 +22,14 @@ public class Report {
     @JoinColumn(name = "userId", referencedColumnName = "id", nullable = false)
     private User user;
 
+    @Setter
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private ReportStatus status;
+
+    @Setter
+    @Column(name = "error_cause")
+    private String errorCause;
 
     @Builder.Default
     @Column(name = "created_at", nullable = false)
