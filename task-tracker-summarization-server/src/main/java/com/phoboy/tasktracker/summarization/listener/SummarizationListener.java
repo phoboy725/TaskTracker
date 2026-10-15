@@ -1,10 +1,12 @@
 package com.phoboy.tasktracker.summarization.listener;
 
+import com.phoboy.tasktracker.shared.dto.ReportMailRequestDto;
 import com.phoboy.tasktracker.shared.dto.ReportStatus;
 import com.phoboy.tasktracker.shared.dto.ReportStatusDto;
-import com.phoboy.tasktracker.summarization.constants.KafkaConstants;
+
 
 import com.phoboy.tasktracker.shared.dto.SummarizationRequestDto;
+import com.phoboy.tasktracker.shared.kafka.KafkaConstants;
 import com.phoboy.tasktracker.summarization.service.GigaChatService;
 import com.phoboy.tasktracker.summarization.service.PromptBuilderService;
 import lombok.RequiredArgsConstructor;
@@ -24,16 +26,19 @@ public class SummarizationListener {
     private final GigaChatService gigaChatService;
     private final KafkaTemplate<Object, Object> kafkaTemplate;
 
-    @KafkaListener(topics = KafkaConstants.REQUESTS, groupId = KafkaConstants.SUM_GROUP_ID)
+    @KafkaListener(topics = KafkaConstants.SUM_REQUESTS, groupId = KafkaConstants.SUM_GROUP_ID)
     public void listenRequest(SummarizationRequestDto requestDto) {
 
         String prompt = promptBuilderService.generatePrompt(requestDto);
 
-        String response = gigaChatService.getAISummarization(prompt);
+        String aiSummarization = gigaChatService.getAISummarization(prompt);
 
-        kafkaTemplate.send(KafkaConstants.RESULTS, new ReportStatusDto(requestDto.uuid(), ReportStatus.COMPLETED));
+        kafkaTemplate.send(KafkaConstants.SUM_RESULTS, new ReportStatusDto(requestDto.uuid(), ReportStatus.SENDING_MAIL));
 
-        log.info("Response=" + response);
+        ReportMailRequestDto reportMailRequestDto = new ReportMailRequestDto(requestDto.uuid(), requestDto.userEmail(), aiSummarization);
+
+        kafkaTemplate.send(KafkaConstants.SUM_MAIL_REQUESTS, reportMailRequestDto);
+        log.info("Mail request sent to mail service.");
 
     }
 }

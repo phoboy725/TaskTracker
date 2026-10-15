@@ -3,8 +3,10 @@ package com.phoboy.tasktracker.controller;
 import com.phoboy.tasktracker.dto.TokenResponseDto;
 import com.phoboy.tasktracker.dto.UserRequestDto;
 import com.phoboy.tasktracker.dto.UserResponseDto;
+import com.phoboy.tasktracker.service.KafkaService;
 import com.phoboy.tasktracker.service.TokenService;
 import com.phoboy.tasktracker.service.UserService;
+import com.phoboy.tasktracker.shared.dto.WelcomeMailRequestDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,7 @@ public class UserController {
 
     private final TokenService tokenService;
     private final UserService userService;
+    private final KafkaService kafkaService;
 
 
     @GetMapping("/user")
@@ -37,6 +40,7 @@ public class UserController {
 
         userService.saveUser(requestDto);
         String token = tokenService.createToken(requestDto);
+        kafkaService.sendToMail(new WelcomeMailRequestDto(requestDto.email()));
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new TokenResponseDto(token));

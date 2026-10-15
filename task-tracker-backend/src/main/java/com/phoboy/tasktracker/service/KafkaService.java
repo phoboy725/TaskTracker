@@ -1,7 +1,8 @@
 package com.phoboy.tasktracker.service;
 
 
-import com.phoboy.tasktracker.constants.KafkaConstants;
+import com.phoboy.tasktracker.shared.dto.WelcomeMailRequestDto;
+import com.phoboy.tasktracker.shared.kafka.KafkaConstants;
 
 import com.phoboy.tasktracker.shared.dto.SummarizationRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +18,13 @@ public class KafkaService {
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
     public void sendToSummarization(SummarizationRequestDto requestDto) {
-        kafkaTemplate.send(KafkaConstants.REQUESTS, requestDto);
-        log.info("requestDto 2 kafka=" + requestDto);
-        log.info("REQUEST SENT!!!");
+        kafkaTemplate.send(KafkaConstants.SUM_REQUESTS, requestDto);
+        log.info("Summarization request sent to summarization service.");
 
+    }
+
+    public void sendToMail(WelcomeMailRequestDto requestDto) {
+        kafkaTemplate.send(KafkaConstants.WELCOME_MAIL_REQUESTS, requestDto);
+        log.info("Welcome mail sent to mailing service.");
     }
 }

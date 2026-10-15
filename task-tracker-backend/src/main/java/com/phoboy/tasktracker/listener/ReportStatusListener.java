@@ -1,7 +1,8 @@
 package com.phoboy.tasktracker.listener;
 
 
-import com.phoboy.tasktracker.constants.KafkaConstants;
+import com.phoboy.tasktracker.shared.dto.ReportMailRequestDto;
+import com.phoboy.tasktracker.shared.kafka.KafkaConstants;
 
 import com.phoboy.tasktracker.shared.dto.ReportStatusDto;
 import com.phoboy.tasktracker.shared.dto.SummarizationRequestDto;
@@ -21,20 +22,27 @@ public class ReportStatusListener {
 
     private final ReportService reportService;
 
-    @KafkaListener(topics = KafkaConstants.RESULTS, groupId = KafkaConstants.SUM_GROUP_ID)
+    @KafkaListener(topics = KafkaConstants.SUM_RESULTS, groupId = KafkaConstants.SUM_GROUP_ID)
     public void listenReportStatus(ReportStatusDto reportStatusDto) {
 
         reportService.updateReportStatus(reportStatusDto.uuid(), reportStatusDto.reportStatus());
 
     }
 
-    @KafkaListener(topics = KafkaConstants.REQUESTS_DLT, groupId = KafkaConstants.DLT_GROUP_ID)
-    public void listenDlt(SummarizationRequestDto dto,
-                          @Header(name = KafkaConstants.HEADER_ERROR_MESSAGE, required = false) String errorCause) {
+    @KafkaListener(topics = KafkaConstants.SUM_REQUESTS_DLT, groupId = KafkaConstants.SUM_DLT_GROUP_ID)
+    public void listenSumDlt(SummarizationRequestDto dto, @Header(name = KafkaConstants.HEADER_ERROR_MESSAGE, required = false) String errorCause) {
 
         reportService.addErrorAndCause(dto.uuid(),
                 (errorCause == null || errorCause.isBlank())
-                ? KafkaConstants.UNKNOWN_ERROR
-                : errorCause);
+                        ? KafkaConstants.UNKNOWN_ERROR : errorCause);
+    }
+
+    @KafkaListener(topics = KafkaConstants.MAIL_REQUESTS_DLT, groupId = KafkaConstants.MAIL_DLT_GROUP_ID)
+    public void listenMailDlt(ReportMailRequestDto dto, @Header(name = KafkaConstants.HEADER_ERROR_MESSAGE, required = false) String errorCause) {
+        log.info("ERROR RECEIVED" + ((errorCause == null || errorCause.isBlank()) ? KafkaConstants.UNKNOWN_ERROR : errorCause));
+
+        reportService.addErrorAndCause(dto.uuid(),
+                (errorCause == null || errorCause.isBlank())
+                        ? KafkaConstants.UNKNOWN_ERROR : errorCause.substring(0, 250));
     }
 }

@@ -1,6 +1,6 @@
 package com.phoboy.tasktracker.config;
 
-import com.phoboy.tasktracker.constants.KafkaConstants;
+import com.phoboy.tasktracker.shared.kafka.KafkaConstants;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,11 +10,11 @@ public class KafkaConfig {
 
     @Bean
     public NewTopic requests() {
-        return new NewTopic(KafkaConstants.REQUESTS, 3, (short) 1);
+        return new NewTopic(KafkaConstants.SUM_REQUESTS, 3, (short) 1);
     }
 
     @Bean
     public NewTopic results() {
-        return new NewTopic(KafkaConstants.RESULTS, 3, (short) 1);
+        return new NewTopic(KafkaConstants.SUM_RESULTS, 3, (short) 1);
     }
 }

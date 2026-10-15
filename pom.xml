@@ -34,6 +34,7 @@
         <module>task-tracker-summarization-server</module>
         <module>task-tracker-shared</module>
         <module>task-tracker-mail-server</module>
+        <module>task-tracker-scheduler</module>
     </modules>
     <dependencyManagement>
         <dependencies>

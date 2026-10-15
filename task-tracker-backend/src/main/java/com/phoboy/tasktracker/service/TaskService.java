@@ -12,6 +12,7 @@ import com.phoboy.tasktracker.model.Task;
 import com.phoboy.tasktracker.model.User;
 import com.phoboy.tasktracker.repository.TaskRepository;
 import com.phoboy.tasktracker.shared.dto.TaskStatus;
+import com.phoboy.tasktracker.shared.kafka.KafkaConstants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -95,9 +96,8 @@ public class TaskService {
                 .build();
 
         taskRepository.save(task);
-        kafkaTemplate.send("task.summarization.requests", new TaskSummarizationEvent(task.getUser().getId(), task.getTitle(), task.getDescription()));
+//        kafkaTemplate.send(KafkaConstants.SUM_REQUESTS, new TaskSummarizationEvent(task.getUser().getId(), task.getTitle(), task.getDescription()));
         return taskMapper.toDto(task);
     }
-
 
 }

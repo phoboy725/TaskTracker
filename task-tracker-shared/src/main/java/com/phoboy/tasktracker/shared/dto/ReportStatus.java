@@ -1,7 +1,8 @@
 package com.phoboy.tasktracker.shared.dto;
 
 public enum ReportStatus {
-    IN_PROGRESS,
+    GENERATING_REPORT,
+    SENDING_MAIL,
     COMPLETED,
     ERROR
 }

@@ -40,7 +40,7 @@ public class SummarizationService {
         User user = userService.findUserByUserId(userId)
                 .orElseThrow(() -> new UserNotFoundException(ExceptionMessage.USER_NOT_FOUND));
 
-        Report report = new Report(reportId, user, ReportStatus.IN_PROGRESS, null ,Instant.now());
+        Report report = new Report(reportId, user, ReportStatus.GENERATING_REPORT, null ,Instant.now());
 
         reportRepository.saveAndFlush(report);
 
